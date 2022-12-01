@@ -535,6 +535,16 @@ class Consumer:
             error_callback = default_error_handler
         self.t_ping = asyncio.create_task(self.__ping_consumer(error_callback))
 
+    async def waiting_consume(self, callback, timeout=10):
+        """
+        Consumes messages from a station.
+        Helper method for consume. To be used when want to consume messages infinitely.
+        Unless keyboard interrupt is pressed, this method will keep consuming messages.
+        """
+        self.consume(callback)
+        while True:
+            await asyncio.sleep(timeout)
+
     def consume(self, callback):
         """Consume events.
         """
